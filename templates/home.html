@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Say Hello in your native language</title>
+  <style>
+    body {
+      font-family: Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input, select, button {
+      font-family: Verdana, sans-serif;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      max-width: 300px;
+    }
+    footer {
+      position: absolute;
+      bottom: 10px;
+      text-align: center;
+      width: 100%;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>Say Hello in your native language</h1>
+  <form id="helloForm">
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <select id="language">
+      <option value="en">English</option>
+      <option value="yo">Yoruba</option>
+      <option value="ig">Igbo</option>
+      <option value="ha">Hausa</option>
+      <option value="am">Amharic</option>
+    </select>
+    <button type="submit">Say Hello</button>
+  </form>
+
+  <div id="greeting" style="margin-top:20px; font-size:1.2em;"></div>
+
+  <footer>Powered by <a href="https://spitch.app">Spitch</a></footer>
+
+  <script>
+    document.getElementById("helloForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const language = document.getElementById("language").value;
+
+      const response = await fetch("/api/hello", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, language })
+      });
+
+      const data = await response.json();
+      document.getElementById("greeting").innerText = data.greeting;
+    });
+  </script>
+</body>
+</html>
